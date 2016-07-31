@@ -10,6 +10,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        rosalind=rosalind:cli
+        rosalind=rosalind:solve
     ''',
 )

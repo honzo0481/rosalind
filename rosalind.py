@@ -78,4 +78,4 @@ def solve(problem, username, password):
 
 
 if __name__ == '__main__':
-    cli()
+    solve()
