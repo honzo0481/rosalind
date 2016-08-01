@@ -45,11 +45,12 @@ class Solver(object):
 
             returns a space delimited list of nucleotide counts in the format: A C G T
         """
-        counts = collections.defaultdict()
+        counts = collections.defaultdict(int)
 
-        for base in nucleotides:
+        for base in s:
             counts[base] += 1
-        return ' '.join(counts)
+
+        return '%s %s %s %s' % (counts['A'], counts['C'], counts['G'], counts['T'])
 
 
     def rna(self, t):
