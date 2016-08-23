@@ -1,3 +1,5 @@
 requests
 click
 pytest
+beautifulsoup4
+lxml

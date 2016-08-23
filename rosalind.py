@@ -6,6 +6,13 @@ import re
 import click
 import requests
 
+# log in
+# get problems in list view
+# parse page for links to problems
+# scrape sample datasets and sample outputs
+# store them in dirs by problem
+# somehow set up the samples as fixtures that your tests can load
+#
 
 class Solver(object):
     """A class for solving Rosalind problems and submitting the answers online."""
