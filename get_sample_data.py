@@ -2,31 +2,45 @@
 
 import requests
 from bs4 import BeautifulSoup
+import csv
+import os.path
 
-def scrape_listview(html):
-    """Scrape the problems list-view for links to the problem pages."""
-    urls = []
-    soup = BeautifulSoup(html)
-    problem_list = soup.find_all('table', class_='problem-list')
-    for link in problem_list.find_all('a'):
-        urls.append(link['href'])
-
-    return urls
+PROBLEMS = ('DNA RNA REVC FIB GC HAMM IPRB PROT SUBS CONS FIBD GRPH IEV LCSM LIA '
+            'MPRT MRNA ORF PERM PRTM REVP SPLC LEXF LGIS LONG PMCH PPER PROB SIGN '
+            'SSEQ TRAN TREE CAT CORR INOD KMER KMP LCSQ LEXV MMCH PDST REAR RSTR '
+            'SSET ASPC EDIT EVAL MOTZ NWCK SCSP SETO SORT SPEC TRIE CONV CTBL DBRU '
+            'EDTA FULL INDC ITWV LREP NKEW RNAS AFRQ CSTR CTEA CUNR GLOB PCOV PRSM '
+            'QRT SGRA SUFF CHBP CNTQ EUBT GASM GCON LING LOCA MEND MGAP MREP MULT '
+            'PDPL ROOT SEXL SPTD WFMD ALPH ASMQ CSET EBIN FOUN GAFF GREP OAP QRTD '
+            'SIMS SMGB KSIM LAFF OSYM RSUB'
+).split()
 
 def scrape_problem(html):
-    """"""
+    """Scrape the sample data and sample output from a problem page and return them."""
+    soup = BeautifulSoup(html, 'lxml')
+    return [tag.string.strip() for tag in soup.find_all('div', class_='codehilite')]
 
-def main():
-    """Scrape the problems pages on rosalind.info for sameple datasets and output."""
-    # get problems list-view page
-     listview_page = requests.get('http://rosalind.info/problems/list-view/')
-     # parse it for links to problems
-     problem_urls = scrape_listview(listview_page.content)
-     # scrape problems for sample datasets and sample output
-     for url in problem_urls:
-         problem_page = requests.get(url)
-         scrape_problem(problem_page.content)
+
+def save_sample(problem, sample, outfile='samples.csv'):
+    """Save sample data and sample output in a csv file."""
+    header = None
+    if not os.path.isfile(outfile):
+        header = 'problem data output'.split()
+
+    with open(outfile, 'a', newline='') as f:
+        writer = csv.writer(f)
+        if header:
+            writer.writerow(header)
+        writer.writerow([problem] + sample)
+
+
+def main(problems):
+    """Scrape the problems pages on rosalind.info for sameple datasets and output, then save them."""
+    for problem in problems:
+        r = requests.get('http://rosalind.info/problems/%s' % problem)
+        results = scrape_problem(r.content)
+        save_sample(problem, results)
 
 
 if __name__ == '__main__':
-    main()
+    main(PROBLEMS)
