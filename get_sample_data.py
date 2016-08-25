@@ -18,10 +18,11 @@ PROBLEMS = ('DNA RNA REVC FIB GC HAMM IPRB PROT SUBS CONS FIBD GRPH IEV LCSM LIA
 def scrape_problem(html):
     """Scrape the sample data and sample output from a problem page and return them."""
     soup = BeautifulSoup(html, 'lxml')
-    return [tag.string.strip() for tag in soup.find_all('div', class_='codehilite')]
+    results = [tag.string.strip() for tag in soup.find_all('div', class_='codehilite')[-2:]]
+    return results
 
 
-def save_sample(problem, sample, outfile='samples.csv'):
+def save_sample(problem, sample, outfile='./test_data/test_data.csv'):
     """Save sample data and sample output in a csv file."""
     header = None
     if not os.path.isfile(outfile):
@@ -35,8 +36,9 @@ def save_sample(problem, sample, outfile='samples.csv'):
 
 
 def main(problems):
-    """Scrape the problems pages on rosalind.info for sameple datasets and output, then save them."""
+    """Scrape the problems pages on rosalind.info for sample datasets and output, then save them."""
     for problem in problems:
+        print(problem)
         r = requests.get('http://rosalind.info/problems/%s' % problem)
         results = scrape_problem(r.content)
         save_sample(problem, results)
