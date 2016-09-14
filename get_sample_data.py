@@ -13,7 +13,8 @@ PROBLEMS = ('DNA RNA REVC FIB GC HAMM IPRB PROT SUBS CONS FIBD GRPH IEV LCSM LIA
             'QRT SGRA SUFF CHBP CNTQ EUBT GASM GCON LING LOCA MEND MGAP MREP MULT '
             'PDPL ROOT SEXL SPTD WFMD ALPH ASMQ CSET EBIN FOUN GAFF GREP OAP QRTD '
             'SIMS SMGB KSIM LAFF OSYM RSUB'
-).split()
+            ).split()
+
 
 def scrape_problem(html):
     """Scrape the sample data and sample output from a problem page and return them."""

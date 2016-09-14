@@ -9,10 +9,8 @@ import requests
 # log in
 # get problems in list view
 # parse page for links to problems
-# scrape sample datasets and sample outputs
-# store them in dirs by problem
-# somehow set up the samples as fixtures that your tests can load
 #
+
 
 class Solver(object):
     """A class for solving Rosalind problems and submitting the answers online."""
@@ -21,15 +19,14 @@ class Solver(object):
         self.logged_in = False
         self.s = requests.session()
 
-
     def login(self, username, password):
-        """Log into rosalind.info"""
+        """Log into rosalind.info."""
         # get /login to find the csrf token
         self.r = self.s.get(r'http://rosalind.info/accounts/login/')
         form_data = {
             'csrfmiddlewaretoken': self.r.headers['Set-Cookie'].split(';')[0].split('=')[-1],
             'next': '',
-            'username': str(user),
+            'username': str(username),
             'password': str(password)
         }
         # post credentials + token to /login
@@ -39,18 +36,16 @@ class Solver(object):
 
     # TODO
     def download_dataset(self, problem):
-        """ Downloads a dataset from Rosalind.info"""
-
+        """Download a dataset from Rosalind.info."""
         url = r'rosalind.info/problems/'
         url = url + problem
 
         self.r = self.s.get(url, stream=True)
 
-
     def dna(self, s):
-        """ Counts the nucleotides in the a DNA string.
+        """Count the nucleotides in the a DNA string.
 
-            returns a space delimited list of nucleotide counts in the format: A C G T
+        returns a space delimited list of nucleotide counts in the format: A C G T
         """
         counts = collections.defaultdict(int)
 
@@ -59,27 +54,26 @@ class Solver(object):
 
         return '%s %s %s %s' % (counts['A'], counts['C'], counts['G'], counts['T'])
 
-
     def rna(self, t):
-        """ Convert DNA to RNA.
+        """Convert DNA to RNA.
 
-            Returns an RNA string.
+        Returns an RNA string.
         """
         return t.replace('T', 'U')
 
-
     def revc(self, s):
-        """ Find the reverse compliment of a DNA string."""
+        """Find the reverse compliment of a DNA string."""
+
 
 @click.command('solve')
 @click.argument('problem')
 @click.option('--username', prompt='username: ')
 @click.password_option()
 def solve(problem, username, password):
-    """ Solve Rosalind.info problems.
+    """Solve Rosalind.info problems.
 
-        This is a set of tools for downloading datasets, solving problems and
-        uploading the answers back to the web.
+    This is a set of tools for downloading datasets, solving problems and
+    uploading the answers back to the web.
     """
     solver = Solver()
     solver.login(username, password)
