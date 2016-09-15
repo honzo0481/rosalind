@@ -63,6 +63,12 @@ class Solver(object):
 
     def revc(self, s):
         """Find the reverse compliment of a DNA string."""
+        base_converter = {'A': 'T', 'C': 'G', 'T': 'A', 'G': 'C'}
+        compliment = ''
+        for base in s:
+            compliment = compliment + base_converter[base]
+        reverse_compliment = compliment[::-1]
+        return reverse_compliment
 
 
 @click.command('solve')
