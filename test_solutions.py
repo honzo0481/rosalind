@@ -41,4 +41,4 @@ def test_solution(solver, problem, input_data, output_data):
         solver = getattr(solver, problem.lower())
     except AttributeError:
         solver = str
-    assert solver(input_data) == output_data, problem
+    assert solver(*input_data.split()) == output_data, problem

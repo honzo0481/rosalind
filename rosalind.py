@@ -70,6 +70,24 @@ class Solver(object):
         reverse_compliment = compliment[::-1]
         return reverse_compliment
 
+    def fib(self, n, k):
+        """Find the sum of of a modified fibonacci sequence.
+
+        Return the fibonacci number Fn if Fn = k * Fn-2 + Fn-1
+        instead of Fn-2 + Fn-1
+        """
+        n, k = int(n), int(k)
+
+        memo = {0: 0, 1: 1}
+
+        def inner(n):
+            if n not in memo:
+                n = inner(n-1) + inner(n-2) * k
+                memo[n] = n
+            return memo[n]
+
+        return str(inner(n))
+
 
 @click.command('solve')
 @click.argument('problem')
