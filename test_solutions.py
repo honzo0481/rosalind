@@ -1,4 +1,4 @@
-"""Tests module."""
+"""Solutions tests."""
 
 import pytest
 import csv
