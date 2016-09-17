@@ -1,7 +1,6 @@
 """Problem solver module."""
 
 import collections
-import re
 
 import click
 import requests
@@ -16,6 +15,7 @@ class Solver(object):
     """A class for solving Rosalind problems and submitting the answers online."""
 
     def __init__(self):
+        """Initialize a Solver."""
         self.logged_in = False
         self.s = requests.session()
 
