@@ -10,6 +10,7 @@ The codes map as follows:
 
 nucleic acids:
  code: meaning             code: meaning
+ ----  -------             ----  -------
     A: adenosine              M: A or C (amino)
     T: thymidine              B: G or T or C
     C: cytidine               S: G or C (strong)
@@ -22,6 +23,7 @@ nucleic acids:
 
 amino acids:
  code: codon: meaning                      code: codon: meaning
+ ----  -----  -------                      ----  -----  -------
     A:   ALA: alanine                         P:   PRO: proline
     B:   ASX: aspartate or asparagine         Q:   GLN: glutamine
     C:   CYS: cystine                         R:   ARG: arginine
@@ -38,3 +40,21 @@ amino acids:
 """
 
 import re
+from collections import namedtuple
+
+
+Sequence = namedtuple('Sequence', 'description sequence')
+
+
+class Parser:
+    """Parses FASTA sequence records.
+
+    Only uppercase nucleic acid sequences without numbers can be parsed.
+    """
+
+    def __call__(record):
+        """Parse a FASTA sequence record."""
+        pattern = r'\>(.+)\s([-ATCGURYKMBSWDHVN\n]+)'
+        parse = re.findall(pattern, record)
+        result = [Sequence(*item) for item in parse]
+        return result
