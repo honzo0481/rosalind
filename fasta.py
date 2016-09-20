@@ -52,9 +52,10 @@ class Parser:
     Only uppercase nucleic acid sequences without numbers can be parsed.
     """
 
-    def __call__(record):
+    def __call__(self, record):
         """Parse a FASTA sequence record."""
         pattern = r'\>(.+)\s([-ATCGURYKMBSWDHVN\n]+)'
         parse = re.findall(pattern, record)
-        result = [Sequence(*item) for item in parse]
-        return result
+        ml_res = [Sequence(*item) for item in parse]  # multiline results
+        results = [s._replace(sequence=s.sequence.replace('\n', '')) for s in ml_res]
+        return results
